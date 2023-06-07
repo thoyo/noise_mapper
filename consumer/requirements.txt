@@ -1,0 +1,5 @@
+paho-mqtt
+influxdb==5.2.3
+moviepy
+audio2numpy
+python-dotenv

@@ -1,0 +1,9 @@
+#!/bin/sh
+export PYTHONPATH=/opt/noisemapper
+
+gunicorn -b  0.0.0.0:5000 $@ \
+  --log-level=INFO \
+  -w $(( 2 * `cat /proc/cpuinfo | grep 'core id' | wc -l` + 1 )) \
+  --max-requests 1000 \
+  -k gevent \
+  main:app

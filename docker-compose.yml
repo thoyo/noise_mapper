@@ -1,0 +1,46 @@
+version: "2"
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - private
+    restart: always
+
+  influxdb:
+    image: influxdb:1.7.10
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    networks:
+      - private
+    restart: always
+
+  noisemapper_consumer:
+    image: noisemapper_consumer:0.0.1
+    networks:
+      - private
+    depends_on:
+      - influxdb
+    stdin_open: true
+    tty: true
+    restart: always
+
+  noisemapper_api:
+    image: noisemapper_api:0.0.1
+    ports:
+      - "443:5000"
+    networks:
+      - private
+    depends_on:
+      - influxdb
+    stdin_open: true
+    tty: true
+    restart: always
+
+networks:
+  private:
